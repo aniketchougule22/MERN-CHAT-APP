@@ -32,6 +32,7 @@ const Signup = () => {
         <Input
           type="text"
           placeholder="Enter Your Name"
+          autoComplete="off"
           onChange={(e) => setName(e.target.value)}
         />
       </FormControl>
@@ -41,6 +42,7 @@ const Signup = () => {
         <Input
           type="email"
           placeholder="Enter Your Email"
+          autoComplete="off"
           onChange={(e) => setEmail(e.target.value)}
         />
       </FormControl>

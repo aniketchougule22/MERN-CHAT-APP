@@ -19,6 +19,7 @@ const Login = () => {
             <Input
               type="email"
               placeholder="Enter Your Email"
+              autoComplete="off"
               onChange={(e) => setEmail(e.target.value)}
             />
           </FormControl>
