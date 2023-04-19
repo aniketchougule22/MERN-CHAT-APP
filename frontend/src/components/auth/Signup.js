@@ -6,24 +6,57 @@ import {
   InputGroup,
   InputRightElement,
   VStack,
+  useToast
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 const Signup = () => {
+  const host = "http://localhost:5000";
+
+  // const [body, setBody] = useState({ name: "", email: "", password: "", confirmpasword: "", pic: "" });
   const [show, setShow] = useState(false);
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [confirmpasword, setConfirmpassword] = useState();
   const [pic, setPic] = useState();
+  const [loading, setLoading] = useState(false);
+  const toast = useToast()
 
   const handleClick = () => {
     setShow(!show);
   };
 
-  const postDetails = (pics) => {};
+  const postDetails = (pics) => {
+    setLoading(true);
+    if (pics === undefined) {
+      toast({
+        title: 'Please Select an Image!',
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+        position: "bottom"
+      });
+      return;
+    }
 
-  const handleSubmit = () => {};
+    if (pics.type === 'image/jpeg' || pics.type === 'image/png') {
+      
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    console.log('eeeee');
+    e.preventDefault();
+    
+        const response = await fetch(`${host}/api/user`, {
+          method: "POST",
+          body: JSON.stringify({name: body.name, email: body.email, password: body.password})
+        });
+    
+        const json = await response.json();
+        console.log('json', json)
+  };
 
   return (
     <VStack spacing="5px">
