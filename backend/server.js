@@ -1,22 +1,22 @@
 const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
 const app = express();
-app.use(express.json());    // to accept json data
-app.use(cors);
+const cors = require('cors');
+// require('colors');
+const dotenv = require('dotenv');
 dotenv.config();
 const connectDB = require('./config/db');
 connectDB();
-require('colors');
+app.use(express.json());    // to accept json data
+app.use(cors());
 const PORT = process.env.PORT || 5000;
 
-const { notFound, errorHandler } = require('./middlewares/handleError');
 const userRoute = require('./routes/userRoute');
+// const { notFound, errorHandler } = require('./middlewares/handleError');
 
 app.use('/api/user', userRoute);
 
-app.use(notFound);
-app.use(errorHandler);
+// app.use(notFound);
+// app.use(errorHandler);
 
 app.listen(PORT, () => {
     console.log(`server running on port ${PORT}` .yellow.bold);

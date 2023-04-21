@@ -26,7 +26,7 @@ const Homepage = () => {
         borderWidth="1px"
       >
         <Center fontSize="4xl" fontFamily="Work sans" color="black">
-          Talk-A-Tive
+          Welcome, Lets Start
         </Center>
       </Box>
       <Box

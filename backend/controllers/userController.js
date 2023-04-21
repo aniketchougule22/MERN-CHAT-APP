@@ -4,6 +4,7 @@ const generateToken = require("../services/generateToken");
 
 const registerUser = asyncHandler(async (req, res) => {
   try {
+    // console.log('working.')
     const { name, email, password, pic } = req.body;
     const get = await userModel.findOne({ email });
     if (!get) {
@@ -26,9 +27,9 @@ const registerUser = asyncHandler(async (req, res) => {
         });
       }
     } else {
-      res.status(400).json({
+      res.status(200).json({
         status: false,
-        statusCode: 400,
+        statusCode: 200,
         message: "Email already exists..!",
       });
     }
