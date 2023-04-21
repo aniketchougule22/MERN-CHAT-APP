@@ -76,7 +76,7 @@ const Signup = () => {
         toast({
           title: "Registration successfull..!",
           status: "success",
-          duration: 5000,
+          duration: 3000,
           isClosable: true,
           position: "bottom",
         });
@@ -87,7 +87,7 @@ const Signup = () => {
         toast({
           title: data.message,
           status: "error",
-          duration: 5000,
+          duration: 3000,
           isClosable: true,
           position: "bottom",
         });

@@ -58,9 +58,9 @@ const authUser = asyncHandler(async (req, res) => {
         token,
       });
     } else {
-      res.status(400).json({
+      res.status(200).json({
         status: false,
-        statusCode: 400,
+        statusCode: 200,
         message: "Invalid Email OR Password..!",
       });
     }
