@@ -74,7 +74,46 @@ const authUser = asyncHandler(async (req, res) => {
   }
 });
 
+const getAllUsers = asyncHandler(async (req, res) => {
+  try {
+    const text = req.query.search
+    ? {
+      $or : [
+        { name: { $regex: req.query.search, $options: "i" } },
+        { email: { $regex: req.query.search, $options: "i" } }
+      ]
+    } : {};
+
+    const get = await userModel.find(text).find({ _id: { $ne: req.user._id } })
+    if (get.length > 0) {
+      res.status(200).json({
+        status: true,
+        statusCode: 200,
+        message: "Data found..!",
+        count: get.length,
+        data: get
+      });
+    } else {
+      res.status(200).json({
+        status: false,
+        statusCode: 200,
+        message: "No data available..!",
+        count: get.length,
+        data: get
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      status: false,
+      statusCode: 400,
+      message: "something went wrong..!",
+      error: error.stack,
+    });
+  }
+});
+
 module.exports = {
   registerUser,
   authUser,
+  getAllUsers
 };

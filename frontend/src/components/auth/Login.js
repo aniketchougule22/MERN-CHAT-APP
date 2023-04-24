@@ -63,6 +63,11 @@ const Login = () => {
   const onChange = (e) => {
     setBody({ ...body, [e.target.name]: e.target.value });
   };
+
+  const onChangeGuestUser = (e) => {
+    setBody({ email: "guest@example.com", password: "123456" });
+  };
+
   return (
     <VStack spacing="5px">
       <FormControl id="email" isRequired>
@@ -110,10 +115,7 @@ const Login = () => {
         variant="solid"
         colorScheme="red"
         width="100%"
-        onClick={() => {
-          setBody.email("guest@example.com");
-          setBody.password("123456");
-        }}
+        onClick={onChangeGuestUser}
       >
         Get Guest User Credentials
       </Button>
