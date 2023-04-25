@@ -51,7 +51,8 @@ const accessChat = asyncHandler(async (req, res) => {
 
 const fetchChats = asyncHandler(async (req, res) => {
   try {
-    chatModel.find({ users: { $elemMatch: { $eq: req.user._id } } })
+    chatModel
+      .find({ users: { $elemMatch: { $eq: req.user._id } } })
       .populate("users", "-password")
       .populate("groupAdmin", "-password")
       .populate("latestMessage")
@@ -77,7 +78,153 @@ const fetchChats = asyncHandler(async (req, res) => {
   }
 });
 
+const createGroupChat = asyncHandler(async (req, res) => {
+  try {
+    if (!req.body.users || !req.body.name) {
+      return res.status(400).send({ message: "please fill all the fields..!" });
+    }
+
+    let users = JSON.parse(req.body.users);
+
+    if (users.length < 2) {
+      return res.status(400).send({
+        message: "More than 2 users are required to form a group chat..!",
+      });
+    }
+
+    users.push(req.user);
+
+    const groupChat = await chatModel.create({
+      chatName: req.body.name,
+      users: users,
+      isGroupChat: true,
+      groupAdmin: req.user,
+    });
+
+    const fullGroupChat = await chatModel
+      .findOne({ _id: groupChat._id })
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password");
+
+    res.status(200).json({
+      status: true,
+      statusCode: 200,
+      data: fullGroupChat,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: false,
+      statusCode: 400,
+      message: "something went wrong..!",
+      error: error.stack,
+    });
+  }
+});
+
+const renameGroup = asyncHandler(async (req, res) => {
+  try {
+    const { chatId, chatName } = req.body;
+
+    const update = await chatModel
+      .findByIdAndUpdate(chatId, { chatName }, { new: true })
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password");
+
+    if (!update) {
+      res.status(404).json({
+        status: false,
+        statusCode: 404,
+        message: "Chat not found..!",
+      });
+    } else {
+      res.status(200).json({
+        status: true,
+        statusCode: 200,
+        message: "Chat updated successfully..!",
+        data: update,
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      status: false,
+      statusCode: 400,
+      message: "something went wrong..!",
+      error: error.stack,
+    });
+  }
+});
+
+const addToGroup = asyncHandler(async (req, res) => {
+  try {
+    const { chatId, userId } = req.body;
+
+    const update = await chatModel
+      .findByIdAndUpdate(chatId, { $push: { users: userId } }, { new: true })
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password");
+
+    if (!update) {
+      res.status(404).json({
+        status: false,
+        statusCode: 404,
+        message: "Chat not found..!",
+      });
+    } else {
+      res.status(200).json({
+        status: true,
+        statusCode: 200,
+        message: "Added successfully..!",
+        data: update,
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      status: false,
+      statusCode: 400,
+      message: "something went wrong..!",
+      error: error.stack,
+    });
+  }
+});
+
+const removeFromGroup = asyncHandler(async (req, res) => {
+  try {
+    const { chatId, userId } = req.body;
+
+    const remove = await chatModel
+      .findByIdAndUpdate(chatId, { $pull: { users: userId } }, { new: true })
+      .populate("users", "-password")
+      .populate("groupAdmin", "-password");
+
+    if (!remove) {
+      res.status(404).json({
+        status: false,
+        statusCode: 404,
+        message: "Chat not found..!",
+      });
+    } else {
+      res.status(200).json({
+        status: true,
+        statusCode: 200,
+        message: "Removed successfully..!",
+        data: remove,
+      });
+    }
+  } catch (error) {
+    res.status(400).json({
+      status: false,
+      statusCode: 400,
+      message: "something went wrong..!",
+      error: error.stack,
+    });
+  }
+});
+
 module.exports = {
   accessChat,
   fetchChats,
+  createGroupChat,
+  renameGroup,
+  addToGroup,
+  removeFromGroup,
 };
