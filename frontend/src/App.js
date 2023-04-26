@@ -6,10 +6,6 @@ import Chatpage from "./Pages/Chatpage";
 
 function App() {
 
-  // const fechData = () => {
-
-  // }
-
   return (
     <div className='App'>
     <Routes>

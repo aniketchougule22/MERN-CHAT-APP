@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Container,
   Box,
@@ -11,8 +11,19 @@ import {
 } from "@chakra-ui/react";
 import Login from "../components/auth/Login";
 import Signup from "../components/auth/Signup";
+import { useNavigate } from "react-router-dom";
 
 const Homepage = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = localStorage.getItem("userInfo");
+    console.log('user', user)
+    if (user) {
+        navigate('/chats');
+    }
+  }, [navigate]);
+
   return (
     <Container maxW="xl" centerContent>
       <Box

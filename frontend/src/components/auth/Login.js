@@ -26,6 +26,7 @@ const Login = () => {
 
   const handleSubmitClick = async () => {
     setLoading(true);
+
     const response = await fetch(`${host}/api/user/login`, {
       method: "POST",
       headers: {

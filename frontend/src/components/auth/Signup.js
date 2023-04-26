@@ -37,7 +37,7 @@ const Signup = () => {
         toast({
           title: "Please Fill all the Fields",
           status: "warning",
-          duration: 5000,
+          duration: 3000,
           isClosable: true,
           position: "bottom",
         });
@@ -49,10 +49,11 @@ const Signup = () => {
         toast({
           title: "Password does not match..!",
           status: "error",
-          duration: 5000,
+          duration: 3000,
           isClosable: true,
           position: "bottom",
         });
+        setLoading(false);
         return;
       }
       setLoading(false);
@@ -98,7 +99,7 @@ const Signup = () => {
         title: "something went wrong..!",
         description: error,
         status: "error",
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
         position: "bottom",
       });
@@ -112,7 +113,7 @@ const Signup = () => {
       toast({
         title: "Please Select an Image!",
         status: "warning",
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
         position: "bottom",
       });
@@ -142,7 +143,7 @@ const Signup = () => {
       toast({
         title: "Please Select an Image!",
         status: "warning",
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
         position: "bottom",
       });
