@@ -13,7 +13,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const host = "http://localhost:5000";
+  const host = process.env.REACT_APP_BASE_URL;
   const [body, setBody] = useState({ email: "", password: "" });
   let navigate = useNavigate();
   const [loading, setLoading] = useState(false);

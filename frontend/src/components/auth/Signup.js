@@ -13,7 +13,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
-  const host = "http://localhost:5000";
+  const host = process.env.REACT_APP_BASE_URL;
 
   // const [body, setBody] = useState({ name: "", email: "", password: "", confirmpasword: "", pic: "" });
   const [show, setShow] = useState(false);

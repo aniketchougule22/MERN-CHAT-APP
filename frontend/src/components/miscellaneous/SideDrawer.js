@@ -22,18 +22,19 @@ import { ChatState } from "../../Context/ChatProvider";
 import ProfileModal from "./ProfileModal";
 import { useNavigate } from "react-router-dom";
 import { useDisclosure } from "@chakra-ui/hooks";
+import { Spinner } from "@chakra-ui/spinner";
 import axios from "axios";
 import ChatLoading from "../ChatLoading";
 import UserListItem from "../UserAvatar/UserListItem";
 
 const SideDrawer = () => {
 
-  const host = "http://localhost:5000";
+  const host = process.env.REACT_APP_BASE_URL;
 
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [loadingChat, setLoadingChat] = useState();
+  const [loadingChat, setLoadingChat] = useState(false);
   const { user, setSelectedChat, chats, setChats } = ChatState();
   // console.log("user SideDrawer", user);
   const navigate = useNavigate();
@@ -69,6 +70,7 @@ const SideDrawer = () => {
       // console.log('search data', data.data)
       setLoading(false);
       setSearchResult(data.data);
+      setSearch('');
     } catch (error) {
       toast({
         title: "Something went wrong..!",
@@ -81,17 +83,23 @@ const SideDrawer = () => {
     }
   };
 
-  const accessChat = async (user_id) => {
+  const accessChat = async (userId) => {
+    // console.log('user_id', user_id)
     try {
       setLoadingChat(true);
       const config = {
         headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${user.token}`
-        }
+          "Content-type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      console.log('config', config.headers.Authorization)
+      const {data} = await axios.post(`${host}/api/chat`, { userId }, config);
+      console.log('post chat data', data)
+      if (!chats.find((c) => c._id === data.data._id)) {
+        setChats([data.data, ...chats]);
       }
-      const {data} = await axios.get(`${host}/api/chat`, { user_id }, config);
-      setSelectedChat(data);
+      setSelectedChat(data.data);
       setLoadingChat(false);
       onClose();
     } catch (error) {
@@ -180,6 +188,7 @@ const SideDrawer = () => {
                 })
               )
             }
+            {/* {loadingChat && <Spinner ml='auto' display='flex' />} */}
           </DrawerBody>
         </DrawerContent>
       </Drawer>
