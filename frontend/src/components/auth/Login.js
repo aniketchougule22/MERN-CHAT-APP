@@ -36,7 +36,7 @@ const Login = () => {
     });
 
     const json = await response.json();
-    console.log("loginJson", json);
+    // console.log("loginJson", json);
     if (json.status === true) {
       // save the token & redirect
       localStorage.setItem('userInfo', JSON.stringify(json));

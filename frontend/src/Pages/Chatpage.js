@@ -7,7 +7,7 @@ import {ChatState} from "../Context/ChatProvider";
 
 const Chatpage = () => {
   const {user} = ChatState();
-  console.log('user chatpage', user)
+  // console.log('user chatpage', user)
 
   return (
     <div style={{ width: "100%" }}>

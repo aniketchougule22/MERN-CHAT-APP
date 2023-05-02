@@ -57,7 +57,7 @@ const Signup = () => {
         return;
       }
       setLoading(false);
-      console.log(name, email, password, pic);
+      // console.log(name, email, password, pic);
 
       const config = {
         headers: {
@@ -71,7 +71,7 @@ const Signup = () => {
         config
       );
       // const resp = JSON.stringify(data);
-      console.log("Jsondata", data);
+      // console.log("Jsondata", data);
 
       if (data.status === true) {
         toast({
@@ -94,7 +94,7 @@ const Signup = () => {
         });
       }
     } catch (error) {
-      console.log('error', error)
+      // console.log('error', error)
       toast({
         title: "something went wrong..!",
         description: error,
@@ -131,7 +131,7 @@ const Signup = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log("data", data);
+          // console.log("data", data);
           setPic(data.url.toString());
           setLoading(false);
         })
