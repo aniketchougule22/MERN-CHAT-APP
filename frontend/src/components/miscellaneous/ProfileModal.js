@@ -9,33 +9,64 @@ import {
   ModalCloseButton,
   Button,
   IconButton,
+  Image,
+  Text,
 } from "@chakra-ui/react";
 
 import { useDisclosure } from "@chakra-ui/hooks";
 import { ViewIcon } from "@chakra-ui/icons";
 
-const ProfileModal = ({user, children}) => {
+const ProfileModal = ({ user, children }) => {
+  console.log("ProfileModal user", user);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <>
-    {
-        children ? (<span onClick={onOpen}>{children}</span>) : (<IconButton display={{base: 'flex'}} icon={<ViewIcon/>} onClick={onOpen}/>)
-    }
+      {children ? (
+        <span onClick={onOpen}>{children}</span>
+      ) : (
+        <IconButton
+          display={{ base: "flex" }}
+          icon={<ViewIcon />}
+          onClick={onOpen}
+        />
+      )}
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal size="lg" isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+        <ModalContent height='410px'>
+          <ModalHeader
+            fontSize="40px"
+            fontFamily="Work sans"
+            display="flex"
+            justifyContent="center"
+          >
+            {user.data.name}
+          </ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-           dhjhgjdh
+          <ModalBody
+            display="flex"
+            flexDir="column"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Image
+              borderRadius="full"
+              boxSize="150px"
+              src={user.data.pic}
+              alt={user.data.name}
+            />
+
+            <Text fontSize={{ base: "28px", md: "30px" }}>
+              Email: {user.data.email}
+            </Text>
           </ModalBody>
 
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button variant="ghost">Secondary Action</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

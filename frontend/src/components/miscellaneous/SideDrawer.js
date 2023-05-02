@@ -1,18 +1,25 @@
 import { Box, Text } from '@chakra-ui/layout';
 import { Avatar, Button, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Tooltip } from '@chakra-ui/react';
 import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons';
-import React, { useState } from 'react'
+import React from 'react'
 import { ChatState } from '../../Context/ChatProvider';
 import ProfileModal from './ProfileModal';
+import { useNavigate } from "react-router-dom";
 
 const SideDrawer = () => {
 
-  const [search, setSearch] = useState("");
-  const [searchResult, setSearchResult] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [loadingChat, setLoadingChat] = useState();
-  const user = ChatState();
-  console.log('user', user)
+  // const [search, setSearch] = useState("");
+  // const [searchResult, setSearchResult] = useState([]);
+  // const [loading, setLoading] = useState(false);
+  // const [loadingChat, setLoadingChat] = useState();
+  const {user} = ChatState();
+  console.log('user SideDrawer', user)
+  const navigate = useNavigate();
+
+  const logouthandler = () => {
+    localStorage.removeItem('userInfo');
+    navigate('/');
+  }
 
   return (
     <div>
@@ -44,14 +51,14 @@ const SideDrawer = () => {
           {/* <MenuList></MenuList> */}
           <Menu>
           <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-            <Avatar size='sm' cursor='pointer' name={user.user.data.name} src={user.user.data.pic} />
+            <Avatar size='sm' cursor='pointer' name={user.data.name} src={user.data.pic}/>
           </MenuButton>
           <MenuList>
-          <ProfileModal>
+          <ProfileModal user={user}>
             <MenuItem>My Profile</MenuItem>
             </ProfileModal>
             <MenuDivider/>
-            <MenuItem>Logout</MenuItem>
+            <MenuItem onClick={logouthandler}>Logout</MenuItem>
           </MenuList>
           </Menu>
         </Menu>

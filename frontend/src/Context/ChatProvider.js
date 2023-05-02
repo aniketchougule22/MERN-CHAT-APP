@@ -25,4 +25,4 @@ const ChatState = () => {
   return useContext(ChatContext);
 };
 
-export {ChatProvider, ChatState}
+export { ChatProvider, ChatState }

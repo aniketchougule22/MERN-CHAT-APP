@@ -39,7 +39,7 @@ const Login = () => {
     console.log("loginJson", json);
     if (json.status === true) {
       // save the token & redirect
-      localStorage.setItem('token', json.token);
+      localStorage.setItem('userInfo', JSON.stringify(json));
       toast({
         title: json.message,
         status: "success",
@@ -47,8 +47,8 @@ const Login = () => {
         isClosable: true,
         position: "bottom",
       });
-      navigate("/chats");
       setLoading(false)
+      navigate("/chats");
     } else {
       toast({
         title: json.message,
