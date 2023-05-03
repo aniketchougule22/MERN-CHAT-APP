@@ -133,8 +133,8 @@ const SideDrawer = () => {
             </Text>
           </Button>
         </Tooltip>
-        <Text fontSize="2xl" fontFamily="Sigmar" fontWeight="bold">
-          Chatify
+        <Text fontSize="2xl" fontFamily="Work sans" fontWeight="bold">
+          <b>C h a t i f y</b>
         </Text>
         <div>
           <Menu>

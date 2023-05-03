@@ -9,7 +9,7 @@ import ChatLoading from '../ChatLoading';
 import { getSender } from '../../config/ChatLogics';
 import GroupChatModal from './GroupChatModal';
 
-const MyChats = () => {
+const MyChats = ({ fetchAgain }) => {
 
   const host = process.env.REACT_APP_BASE_URL;
 
@@ -43,7 +43,7 @@ const MyChats = () => {
     setLoggedUser(JSON.parse(localStorage.getItem('userInfo')));
     fetchChats();
     // eslint-disable-next-line
-  }, []);
+  }, [fetchAgain]);
 
   return (
     <Box
@@ -65,6 +65,7 @@ const MyChats = () => {
         w='100%'
         justifyContent='space-between'
         alignItems='center'
+        fontWeight='bold'
       >
         My Chats
         <GroupChatModal>

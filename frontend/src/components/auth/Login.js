@@ -80,6 +80,7 @@ const Login = () => {
           name="email"
           value={body.email}
           onChange={onChange}
+          required
         />
       </FormControl>
 
@@ -92,6 +93,7 @@ const Login = () => {
             name="password"
             value={body.password}
             onChange={onChange}
+            required
           />
 
           <InputRightElement w="4.5rem">

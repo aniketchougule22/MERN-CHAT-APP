@@ -18,7 +18,7 @@ const Homepage = () => {
 
   useEffect(() => {
     const user = localStorage.getItem("userInfo");
-    console.log('user', user)
+    // console.log('user', user)
     if (user) {
         navigate('/chats');
     }
@@ -37,7 +37,7 @@ const Homepage = () => {
         borderWidth="1px"
       >
         <Center fontSize="4xl" fontFamily="Work sans" color="black">
-        Chatify
+        C h a t i f y
         </Center>
       </Box>
       <Box
