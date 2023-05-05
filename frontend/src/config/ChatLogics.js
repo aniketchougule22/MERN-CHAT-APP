@@ -3,8 +3,8 @@ export const getSender = (loggedUser, users) => {
 }
 
 export const getSenderFull = (loggedUser, users) => {
-    let dataa = users[0]._id === loggedUser._id ? users[0] : users[1];
-    let obj = {data: dataa};
+    let resp = users[0]._id === loggedUser._id ? users[0] : users[1];
+    let obj = {data: resp};
     // console.log('return obj', obj);
     return obj
 }

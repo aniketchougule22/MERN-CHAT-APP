@@ -3,8 +3,8 @@
 .App {
   min-height: 100vh;
   display: flex;
-  background-image: url('./whatsapp-background.png');
-  /* background-color: white; */
+  /* background-image: url('./whatsapp-background.png'); */
+  background-color: white;
   /* background-image: url('./background.png'); */
   /* background-image: url('./1288089.jpg'); */
   background-attachment: fixed;

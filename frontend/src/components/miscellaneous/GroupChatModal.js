@@ -101,7 +101,7 @@ const GroupChatModal = ({ children }) => {
     } catch (error) {
         toast({
             title: "Something went wrong..!",
-            description: error.message,
+            description: "More than 2 users are required to form a group chat..!",
             status: "error",
             duration: 3000,
             isClosable: true,
@@ -148,7 +148,7 @@ const GroupChatModal = ({ children }) => {
           <ModalBody display="flex" flexDir="column" alignItems="center">
             <FormControl>
               <Input
-                placeholder="Chat Name"
+                placeholder="Group Chat Name"
                 mb={3}
                 onChange={(e) => setGroupChatName(e.target.value)}
                 autoComplete="off"
