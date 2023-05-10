@@ -10,12 +10,13 @@ app.use(express.json());    // to accept json data
 app.use(cors());
 const PORT = process.env.PORT || 5000;
 
-const { userRoute, chatRoute } = require('./routes/index');
+const { userRoute, chatRoute, messageRoute } = require('./routes/index');
 
 const { notFound, errorHandler } = require('./middlewares/handleError');
 
 app.use('/api/user', userRoute);
 app.use('/api/chat', chatRoute);
+app.use('/api/message', messageRoute);
 
 app.use(notFound);
 app.use(errorHandler);
