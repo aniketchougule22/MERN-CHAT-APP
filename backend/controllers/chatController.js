@@ -27,7 +27,8 @@ const accessChat = asyncHandler(async (req, res) => {
     });
 
     if (isChat.length > 0) {
-      res.send(isChat[0]);
+      // res.send(isChat[0]);
+      res.status(200).send({ status: true, statusCode: 200, data: isChat[0] });
     } else {
       const create = await chatModel.create({
         chatName: "sender",

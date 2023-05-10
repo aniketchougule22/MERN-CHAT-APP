@@ -36,6 +36,7 @@ const SideDrawer = () => {
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
   const { user, setSelectedChat, chats, setChats } = ChatState();
+  // console.log('chats', chats)
   // console.log("user SideDrawer", user);
   const navigate = useNavigate();
 
@@ -93,16 +94,20 @@ const SideDrawer = () => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      console.log('config', config.headers.Authorization)
+      // console.log('config', config.headers.Authorization)
       const {data} = await axios.post(`${host}/api/chat`, { userId }, config);
-      console.log('post chat data', data)
+      // console.log('post chat data', data)
       if (!chats.find((c) => c._id === data.data._id)) {
         setChats([data.data, ...chats]);
+      }
+      else {
+        setChats([...chats]);
       }
       setSelectedChat(data.data);
       setLoadingChat(false);
       onClose();
     } catch (error) {
+      // console.log('error', error.stack);
       toast({
         title: "Something went wrong..!",
         description: error.message,
@@ -189,7 +194,7 @@ const SideDrawer = () => {
                 })
               )
             }
-            {/* {loadingChat && <Spinner ml='auto' display='flex' />} */}
+            {loadingChat && <Spinner ml='auto' display='flex' />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>

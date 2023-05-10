@@ -22,7 +22,7 @@ import UserBadgeItem from "../UserAvatar/UserBadgeItem";
 import UserListItem from "../UserAvatar/UserListItem";
 import axios from "axios";
 
-const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
+const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   // let obj = {fetchAgain: fetchAgain, setFetchAgain: setFetchAgain};
   // console.log('obj', obj)
   const host = process.env.REACT_APP_BASE_URL;
@@ -186,6 +186,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
     // console.log('user1._id', user1._id)
 
     setFetchAgain(!fetchAgain);
+    fetchMessages();
     setLoading(false);
     } catch (error) {
       console.log('error', error);
