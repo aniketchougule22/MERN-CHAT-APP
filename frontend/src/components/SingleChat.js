@@ -9,14 +9,24 @@ import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import axios from "axios";
 import "./style.css";
 import ScrollableChat from "./ScrollableChat";
+import io from 'socket.io-client';
+
+const ENDPOINT = 'http://localhost:5000';
+let socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
+  
 
   const host = process.env.REACT_APP_BASE_URL;
-  const { user, selectedChat, setSelectedChat } = ChatState();
+  let { user, selectedChat, setSelectedChat } = ChatState();
+  // console.log('user', user)
+  // console.log('selectedChat', selectedChat)
+  // console.log('singleChat user', user)
+  // user = user.data;
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState();
+  const [socketConnected, setSocketConnected] = useState(false);
   const toast = useToast();
 
   const fetchMessages = async () => {
@@ -29,8 +39,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           Authorization: `Bearer ${user.token}`
         }
       }
+      // console.log('user.token', config.headers.Authorization)
       setLoading(true);
 
+      // console.log('selectedChat._id', selectedChat._id)
       const { data } = await axios.get(`${host}/api/message/${selectedChat._id}`, config);
       // console.log('fetchMessages data', data);
       // console.log('messages', messages);
@@ -39,6 +51,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       setLoading(false);
 
     } catch (error) {
+      console.log('error', error)
       toast({
         title: "Something went wrong..!",
         description: "Failed to Load the messages",
@@ -86,6 +99,15 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
+  useEffect(() => {
+    socket = io(ENDPOINT, {
+      transports: ['websocket']
+    });
+    socket.emit('setup', user.data);
+    socket.on("connection", () => setSocketConnected(true));
+    // eslint-disable-next-line
+  }, []);
+
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
     // Typing indicator logic
@@ -114,7 +136,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             {!selectedChat.isGroupChat ? (
               <>
                 {getSender(user, selectedChat.users)}
-                <ProfileModal user={getSenderFull(user, selectedChat.users)}/>
+                <ProfileModal user={getSenderFull(user, selectedChat.users)} />
               </>
             ) : (
               <>

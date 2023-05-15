@@ -84,6 +84,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
       ]
     } : {};
 
+    console.log('req.user._id', req.user._id)
     const get = await userModel.find(text).find({ _id: { $ne: req.user._id } })
     if (get.length > 0) {
       res.status(200).json({

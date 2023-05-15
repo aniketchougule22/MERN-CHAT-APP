@@ -40,10 +40,19 @@ const MyChats = ({ fetchAgain }) => {
   }
 
   useEffect(() => {
+    // console.log('userInfo', JSON.parse(localStorage.getItem('userInfo.data')))
     setLoggedUser(JSON.parse(localStorage.getItem('userInfo')));
     fetchChats();
     // eslint-disable-next-line
   }, [fetchAgain]);
+
+  // useEffect(() => {
+  //   const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+  //   console.log('userInfo', userInfo.data)
+  //   setLoggedUser(userInfo.data);
+  //   fetchChats();
+  //   // eslint-disable-next-line
+  // }, [fetchAgain]);
 
   return (
     <Box
