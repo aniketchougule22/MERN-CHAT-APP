@@ -50,6 +50,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       setMessages(data.data);
       setLoading(false);
 
+      socket.emit("join chat", selectedChat._id);
     } catch (error) {
       console.log('error', error)
       toast({
@@ -64,9 +65,33 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
 
   useEffect(() => {
+    socket = io(ENDPOINT, {
+      transports: ['websocket']
+    });
+    socket.emit('setup', user.data);
+    socket.on("connection", () => setSocketConnected(true));
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
     fetchMessages();
+
+    selectedChatCompare = selectedChat;
     // eslint-disable-next-line
   }, [selectedChat]);
+
+  useEffect(() => {
+    socket.on("message received", (newMessageReceived) => {
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare._id !== newMessageReceived.chat._id
+      ) {
+        // give notification
+      } else {
+        setMessages([ ...messages, newMessageReceived ]);
+      }
+    })
+  });
 
   const sendMessage = async (event) => {
     try {
@@ -85,6 +110,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         }, config);
         // console.log('sendMessage data', data);
 
+        socket.emit("new message", data.data);
         setMessages([ ...messages, data.data ]);
       }
     } catch (error) {
@@ -98,15 +124,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       });
     }
   };
-
-  useEffect(() => {
-    socket = io(ENDPOINT, {
-      transports: ['websocket']
-    });
-    socket.emit('setup', user.data);
-    socket.on("connection", () => setSocketConnected(true));
-    // eslint-disable-next-line
-  }, []);
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);

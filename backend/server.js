@@ -36,13 +36,30 @@ const io = require("socket.io")(server, {
     transports: ['websocket']
   });
 
-io.on("IO connection", (socket) => {
+io.on("connection", (socket) => {
   console.log("Connected to socket.io");
-  socket.on('message', (userData) => {
+  socket.on('setup', (userData) => {
     socket.join(userData._id);
-    console.log('userData._id', userData._id)
-    socket.emit('socket.io connected');
+    // console.log('userData._id', userData)
+    socket.emit('connected');
   });
+
+  socket.on("join chat", (room) => {
+    socket.join(room);
+    // console.log("User joined room : ", room);
+  })
+
+  socket.on("new message", (newMessageReceived) => {
+    var chat = newMessageReceived.chat;
+
+    if (!chat.users) return console.log("chat.users not defined");
+
+    chat.users.forEach(user => {
+      if (user._id == newMessageReceived.sender._id) return;
+
+      socket.in(user._id).emit("message received", newMessageReceived);
+    });
+  })
 
   // socket.on('disconnect', () => {
   //   console.log('Client disconnected');
