@@ -136,7 +136,7 @@ const Signup = () => {
           setLoading(false);
         })
         .catch((err) => {
-          console.log("error", err);
+          // console.log("error", err);
           setLoading(false);
         });
     } else {

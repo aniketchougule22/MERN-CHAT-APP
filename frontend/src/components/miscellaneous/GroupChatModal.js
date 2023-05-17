@@ -86,7 +86,7 @@ const GroupChatModal = ({ children }) => {
         { name: groupChatName, users: JSON.stringify(selectedUsers.map((u) => u._id)) },
         config
         );
-        console.log('group data', data)
+        // console.log('group data', data)
 
         setChats([data.data, ...chats]);
         onClose();
@@ -100,9 +100,9 @@ const GroupChatModal = ({ children }) => {
           setSelectedUsers([]);
     } catch (error) {
         toast({
-            title: "Something went wrong..!",
-            description: "More than 2 users are required to form a group chat..!",
-            status: "error",
+            title: "Note",
+            description: "More than 1 user are required to form a group chat..!",
+            status: "warning",
             duration: 3000,
             isClosable: true,
             position: "bottom-left",

@@ -87,7 +87,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
 
       const { data } = await axios.get(`${host}/api/user?search=${search}`, config);
 
-      console.log('handleSearch data', data);
+      // console.log('handleSearch data', data);
       setLoading(false);
       setSearchResult(data.data);
       // onClose();
@@ -116,7 +116,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
       return;
     }
     if (selectedChat.groupAdmin._id !== user.data._id) {
-      console.log('user._id', user._id)
+      // console.log('user._id', user._id)
       toast({
         title: "Only admin can add someone..!",
         status: "error",
@@ -157,7 +157,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
   };
 
   const handleRemoveUser = async (user1) => {
-    console.log('upper user1', user1);
+    // console.log('upper user1', user1);
     if (selectedChat.groupAdmin._id !== user.data._id && user1._id !== user.data._id) {
       toast({
         title: "Only admin can remove someone..!",
@@ -189,7 +189,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
     fetchMessages();
     setLoading(false);
     } catch (error) {
-      console.log('error', error);
+      // console.log('error', error);
       toast({
         title: "Something went wrong..!",
         description: error.message,
@@ -226,7 +226,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
                     key={user._id}
                     user={user}
                     handleFunction={()=>{
-                      console.log('userbadge user', user);
+                      // console.log('userbadge user', user);
                       handleRemoveUser(user)}}
                   />
                 );
@@ -276,7 +276,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
 
           <ModalFooter>
             <Button onClick={()=> {
-              console.log('onClick leave user', user);
+              // console.log('onClick leave user', user);
               handleRemoveUser(user.data)
               }} colorScheme="red">
               Leave Group

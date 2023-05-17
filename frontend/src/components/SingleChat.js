@@ -62,7 +62,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
       socket.emit("join chat", selectedChat._id);
     } catch (error) {
-      console.log("error", error);
+      // console.log("error", error);
       toast({
         title: "Something went wrong..!",
         description: "Failed to Load the messages",
