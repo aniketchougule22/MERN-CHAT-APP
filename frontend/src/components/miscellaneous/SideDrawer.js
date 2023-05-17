@@ -26,16 +26,25 @@ import { Spinner } from "@chakra-ui/spinner";
 import axios from "axios";
 import ChatLoading from "../ChatLoading";
 import UserListItem from "../UserAvatar/UserListItem";
+import { getSender } from "../../config/ChatLogics";
+import { Effect }  from 'react-notification-badge';
+import NotificationBadge  from 'react-notification-badge';
 
 const SideDrawer = () => {
-
   const host = process.env.REACT_APP_BASE_URL;
 
   const [search, setSearch] = useState("");
   const [searchResult, setSearchResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingChat, setLoadingChat] = useState(false);
-  const { user, setSelectedChat, chats, setChats } = ChatState();
+  const {
+    user,
+    setSelectedChat,
+    chats,
+    setChats,
+    notification,
+    setNotification,
+  } = ChatState();
   // console.log('chats', chats)
   // console.log("user SideDrawer", user);
   const navigate = useNavigate();
@@ -64,18 +73,21 @@ const SideDrawer = () => {
       setLoading(true);
       const config = {
         headers: {
-          Authorization: `Bearer ${user.token}`
-        }
-      }
-      const { data } = await axios.get(`${host}/api/user/?search=${search}`, config);
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      const { data } = await axios.get(
+        `${host}/api/user/?search=${search}`,
+        config
+      );
       // console.log('search data', data.data)
       setLoading(false);
       setSearchResult(data.data);
-      setSearch('');
+      setSearch("");
     } catch (error) {
       toast({
         title: "Something went wrong..!",
-        description: 'Failed to Load the Search Results',
+        description: "Failed to Load the Search Results",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -95,12 +107,11 @@ const SideDrawer = () => {
         },
       };
       // console.log('config', config.headers.Authorization)
-      const {data} = await axios.post(`${host}/api/chat`, { userId }, config);
+      const { data } = await axios.post(`${host}/api/chat`, { userId }, config);
       // console.log('post chat data', data)
       if (!chats.find((c) => c._id === data.data._id)) {
         setChats([data.data, ...chats]);
-      }
-      else {
+      } else {
         setChats([...chats]);
       }
       setSelectedChat(data.data);
@@ -117,7 +128,7 @@ const SideDrawer = () => {
         position: "bottom-left",
       });
     }
-  }
+  };
 
   return (
     <div>
@@ -138,15 +149,31 @@ const SideDrawer = () => {
             </Text>
           </Button>
         </Tooltip>
-        <Text fontSize="2xl" fontFamily="Work sans" fontWeight="bold">
-          <b>C h a t i f y</b>
+        <Text fontSize="2xl" fontFamily="Work sans" fontWeight="bold" letterSpacing={10}>
+          <b>Chatify</b>
         </Text>
         <div>
           <Menu>
             <MenuButton padding={1}>
+            <NotificationBadge count={notification.length} effect={Effect.SCALE}/>
               <BellIcon fontSize="2xl" margin={1} />
             </MenuButton>
-            {/* <MenuList></MenuList> */}
+            <MenuList pl={2}>
+              {!notification.length && "No New Messages"}
+              {notification.map((notif) => (
+                <MenuItem
+                  key={notif._id}
+                  onClick={() => {
+                    setSelectedChat(notif.chat);
+                    setNotification(notification.filter((n) => n !== notif));
+                  }}
+                >
+                  {notif.chat.isGroupChat
+                    ? `New Message in ${notif.chat.chatName}`
+                    : `New Message from ${getSender(user, notif.chat.users)}`}
+                </MenuItem>
+              ))}
+            </MenuList>
             <Menu>
               <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                 <Avatar
@@ -156,7 +183,7 @@ const SideDrawer = () => {
                   src={user.data.pic}
                 />
               </MenuButton>
-              
+
               <MenuList>
                 <ProfileModal user={user}>
                   <MenuItem>My Profile</MenuItem>
@@ -183,18 +210,20 @@ const SideDrawer = () => {
               />
               <Button onClick={handleSearch}>Go</Button>
             </Box>
-            {
-              loading ? ( <ChatLoading /> ) : (
-                searchResult.map((user) => {
-                  return <UserListItem 
+            {loading ? (
+              <ChatLoading />
+            ) : (
+              searchResult.map((user) => {
+                return (
+                  <UserListItem
                     key={user._id}
                     user={user}
                     handleFunction={() => accessChat(user._id)}
                   />
-                })
-              )
-            }
-            {loadingChat && <Spinner ml='auto' display='flex' />}
+                );
+              })
+            )}
+            {loadingChat && <Spinner ml="auto" display="flex" />}
           </DrawerBody>
         </DrawerContent>
       </Drawer>

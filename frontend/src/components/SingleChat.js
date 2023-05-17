@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ChatState } from "../Context/ChatProvider";
 import { Box, Text } from "@chakra-ui/layout";
-import {
-  FormControl,
-  IconButton,
-  Input,
-  Spinner,
-  useToast,
-} from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { getSender, getSenderFull } from "../config/ChatLogics";
 import ProfileModal from "./miscellaneous/ProfileModal";
@@ -16,13 +9,21 @@ import axios from "axios";
 import "./style.css";
 import ScrollableChat from "./ScrollableChat";
 import io from "socket.io-client";
+import {
+  FormControl,
+  IconButton,
+  Input,
+  Spinner,
+  useToast,
+} from "@chakra-ui/react";
+
 
 const ENDPOINT = "http://localhost:5000";
 let socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const host = process.env.REACT_APP_BASE_URL;
-  let { user, selectedChat, setSelectedChat } = ChatState();
+  let { user, selectedChat, setSelectedChat, notification, setNotification } = ChatState();
   // console.log('user', user)
   // console.log('selectedChat', selectedChat)
   // console.log('singleChat user', user)
@@ -91,13 +92,17 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     // eslint-disable-next-line
   }, [selectedChat]);
 
+
   useEffect(() => {
     socket.on("message received", (newMessageReceived) => {
       if (
         !selectedChatCompare ||
         selectedChatCompare._id !== newMessageReceived.chat._id
       ) {
-        // give notification
+        if (!notification.includes(newMessageReceived)) {
+          setNotification([ newMessageReceived, ...notification ]);
+          setFetchAgain(!fetchAgain);
+        }
       } else {
         setMessages([...messages, newMessageReceived]);
       }
